@@ -1,0 +1,58 @@
+#! /usr/bin/env node
+
+// console.log("zhu-cli");
+
+// 1）配置可执行命令 commander
+const program = require("commander");
+const chalk = require("chalk");
+
+// 核心功能 1.创建项目 2.更改配置文件 3.ui界面
+// 万一重名？强制创建模式
+
+// const cleanArgs = (cmd) => {};
+
+program
+  .command("create <app-name>")
+  .description("create a new project")
+  .option("-f, --force", "overwrite target directory if it exists")
+  .action((name, cmd) => {
+    // 调用create模块
+    require("../lib/create.js")(name, cmd);
+    console.log(name, cmd);
+  });
+
+program
+  .command("config [value]")
+  .description(`inspect and modify the config`)
+  .option("-g, --get <path>", "get value form option")
+  .option("-s, --set <path> <value>")
+  .option("-d, --delete <path>", "delete option from config")
+  .action((value, cmd) => {
+    console.log(value, cmd);
+  });
+
+program
+  .command("ui")
+  .description("start and open zhufeng-cli ui")
+  .option("-p, --port <port>", "Port used for UI sever")
+  .action((cmd) => {
+    console.log(cmd);
+  });
+
+program
+  .version(`zhu-cli@${require("../package.json").version}`)
+  .usage(`<command> [options]`);
+
+// 解析用户执行命令时传入的参数
+program.on("--help", function () {
+  console.log();
+  console.log(`Run ${chalk.cyan(`zhufeng-cli <command> --help`)} show details`);
+  console.log();
+});
+program.parse(process.argv);
+
+// 2）我们要实现脚手架先做一个命令交互的功能 inquirer
+
+// 3）将模板下载下来
+
+// 4（根据用户的选择动态的生成内容
